@@ -79,6 +79,8 @@ import (
 	"github.com/crossplane/provider-aws/pkg/controller/redshift"
 	"github.com/crossplane/provider-aws/pkg/controller/route53/hostedzone"
 	"github.com/crossplane/provider-aws/pkg/controller/route53/resourcerecordset"
+	"github.com/crossplane/provider-aws/pkg/controller/route53resolver/resolverendpoint"
+	"github.com/crossplane/provider-aws/pkg/controller/route53resolver/resolverrule"
 	"github.com/crossplane/provider-aws/pkg/controller/s3"
 	"github.com/crossplane/provider-aws/pkg/controller/s3/bucketpolicy"
 	"github.com/crossplane/provider-aws/pkg/controller/secretsmanager/secret"
@@ -154,6 +156,8 @@ func Setup(mgr ctrl.Manager, l logging.Logger, rl workqueue.RateLimiter) error {
 		dbcluster.SetupDBCluster,
 		dbparametergroup.SetupDBParameterGroup,
 		vpccidrblock.SetupVPCCIDRBlock,
+		resolverendpoint.SetupResolverEndpoint,
+		resolverrule.SetupResolverRule,
 	} {
 		if err := setup(mgr, l, rl); err != nil {
 			return err
