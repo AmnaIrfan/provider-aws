@@ -76,6 +76,20 @@ type ResolverEndpoint_SDK struct {
 	StatusMessage *string `json:"statusMessage,omitempty"`
 }
 
+type ResolverQueryLogConfig struct {
+	ARN *string `json:"arn,omitempty"`
+
+	CreationTime *string `json:"creationTime,omitempty"`
+
+	CreatorRequestID *string `json:"creatorRequestID,omitempty"`
+
+	ID *string `json:"id,omitempty"`
+
+	OwnerID *string `json:"ownerID,omitempty"`
+
+	ShareStatus *string `json:"shareStatus,omitempty"`
+}
+
 type ResolverQueryLogConfigAssociation struct {
 	CreationTime *string `json:"creationTime,omitempty"`
 
@@ -84,40 +98,6 @@ type ResolverQueryLogConfigAssociation struct {
 	ResolverQueryLogConfigID *string `json:"resolverQueryLogConfigID,omitempty"`
 
 	ResourceID *string `json:"resourceID,omitempty"`
-}
-
-type ResolverQueryLogConfig_SDK struct {
-	ARN *string `json:"arn,omitempty"`
-
-	AssociationCount *int64 `json:"associationCount,omitempty"`
-
-	CreationTime *string `json:"creationTime,omitempty"`
-
-	CreatorRequestID *string `json:"creatorRequestID,omitempty"`
-
-	DestinationARN *string `json:"destinationARN,omitempty"`
-
-	ID *string `json:"id,omitempty"`
-
-	Name *string `json:"name,omitempty"`
-
-	OwnerID *string `json:"ownerID,omitempty"`
-
-	ShareStatus *string `json:"shareStatus,omitempty"`
-
-	Status *string `json:"status,omitempty"`
-}
-
-type ResolverRuleAssociation struct {
-	ID *string `json:"id,omitempty"`
-
-	Name *string `json:"name,omitempty"`
-
-	ResolverRuleID *string `json:"resolverRuleID,omitempty"`
-
-	StatusMessage *string `json:"statusMessage,omitempty"`
-
-	VPCID *string `json:"vpcID,omitempty"`
 }
 
 type ResolverRuleConfig struct {

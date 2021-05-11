@@ -79,23 +79,13 @@ const (
 	ResolverQueryLogConfigAssociationStatus_FAILED        ResolverQueryLogConfigAssociationStatus = "FAILED"
 )
 
-type ResolverQueryLogConfigStatus_SDK string
+type ResolverQueryLogConfigStatus string
 
 const (
-	ResolverQueryLogConfigStatus_SDK_CREATING ResolverQueryLogConfigStatus_SDK = "CREATING"
-	ResolverQueryLogConfigStatus_SDK_CREATED  ResolverQueryLogConfigStatus_SDK = "CREATED"
-	ResolverQueryLogConfigStatus_SDK_DELETING ResolverQueryLogConfigStatus_SDK = "DELETING"
-	ResolverQueryLogConfigStatus_SDK_FAILED   ResolverQueryLogConfigStatus_SDK = "FAILED"
-)
-
-type ResolverRuleAssociationStatus string
-
-const (
-	ResolverRuleAssociationStatus_CREATING   ResolverRuleAssociationStatus = "CREATING"
-	ResolverRuleAssociationStatus_COMPLETE   ResolverRuleAssociationStatus = "COMPLETE"
-	ResolverRuleAssociationStatus_DELETING   ResolverRuleAssociationStatus = "DELETING"
-	ResolverRuleAssociationStatus_FAILED     ResolverRuleAssociationStatus = "FAILED"
-	ResolverRuleAssociationStatus_OVERRIDDEN ResolverRuleAssociationStatus = "OVERRIDDEN"
+	ResolverQueryLogConfigStatus_CREATING ResolverQueryLogConfigStatus = "CREATING"
+	ResolverQueryLogConfigStatus_CREATED  ResolverQueryLogConfigStatus = "CREATED"
+	ResolverQueryLogConfigStatus_DELETING ResolverQueryLogConfigStatus = "DELETING"
+	ResolverQueryLogConfigStatus_FAILED   ResolverQueryLogConfigStatus = "FAILED"
 )
 
 type ResolverRuleStatus_SDK string

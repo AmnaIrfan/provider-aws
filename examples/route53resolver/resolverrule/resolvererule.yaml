@@ -1,19 +1,19 @@
 apiVersion: route53resolver.aws.crossplane.io/v1alpha1
 kind: ResolverRule
 metadata:
-  name: sample-resolver-rule
+  name: sample-resolver-rule2
 spec:
   forProvider:
       region: us-east-1
-      creatorRequestID: sample-resolver-rule-123
-      name: sample-resolver-rule
-      domainName: www.example.com
+      creatorRequestID: sample-resolver-rule-1234
+      name: sample-resolver-rule2
+      domainName: www.ea.com
       ruleType: RECURSIVE
       targetIPs:
         - ip: 192.0.2.10
           port: 53
       resolverEndpointIdRefs:
-        name: sample-resolver
+        name: amna-resolver3
   providerConfigRef:
-    name: sample
+    name: ea-aws-amna
   

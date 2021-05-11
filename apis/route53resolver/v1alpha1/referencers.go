@@ -1,5 +1,14 @@
 package v1alpha1
 
+import (
+	"context"
+
+	"github.com/crossplane/crossplane-runtime/pkg/reference"
+	ec2 "github.com/crossplane/provider-aws/apis/ec2/v1beta1"
+	"github.com/pkg/errors"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
 /*
 Copyright 2021 The Crossplane Authors.
 
@@ -15,15 +24,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
-import (
-	"context"
-
-	"github.com/crossplane/crossplane-runtime/pkg/reference"
-	ec2 "github.com/crossplane/provider-aws/apis/ec2/v1beta1"
-	"github.com/pkg/errors"
-	"sigs.k8s.io/controller-runtime/pkg/client"
-)
 
 // ResolveReferences of this Route53ResolverEndpoint
 func (mg *ResolverEndpoint) ResolveReferences(ctx context.Context, c client.Reader) error {
@@ -78,5 +78,39 @@ func (mg *ResolverRule) ResolveReferences(ctx context.Context, c client.Reader) 
 	mg.Spec.ForProvider.ResolverEndpointID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.ResolverEndpointIDRef = rsp.ResolvedReference
 
+	return nil
+}
+
+//ResolveReferences of this Route53ResolverRule
+func (mg *ResolverRuleAssociation) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	//Resolve spec.forProvider.vpcId
+	rsp, err := r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.VPCID),
+		Reference:    mg.Spec.ForProvider.VPCIDRef,
+		Selector:     mg.Spec.ForProvider.VPCIDSelector,
+		To:           reference.To{Managed: &ec2.VPC{}, List: &ec2.VPCList{}},
+		Extract:      reference.ExternalName(),
+	})
+	if err != nil {
+		return errors.Wrap(err, "spec.forProvider.VpcId")
+	}
+	mg.Spec.ForProvider.VPCID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.VPCIDRef = rsp.ResolvedReference
+
+	//Resolve spec.forProvider.resolverRuleId
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ResolverRuleID),
+		Reference:    mg.Spec.ForProvider.ResolverRuleIDRef,
+		Selector:     mg.Spec.ForProvider.ResolverRuleIDSelector,
+		To:           reference.To{Managed: &ResolverRule{}, List: &ResolverRuleList{}},
+		Extract:      reference.ExternalName(),
+	})
+	if err != nil {
+		return errors.Wrap(err, "spec.forProvider.resolverRuleId")
+	}
+	mg.Spec.ForProvider.ResolverRuleID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ResolverRuleIDRef = rsp.ResolvedReference
 	return nil
 }
