@@ -1,8 +1,13 @@
 package resolverrule
 
 import (
+	"context"
+
 	ctrl "sigs.k8s.io/controller-runtime"
 
+	"github.com/aws/aws-sdk-go/aws"
+	svcsdk "github.com/aws/aws-sdk-go/service/route53resolver"
+	"github.com/crossplane/crossplane-runtime/pkg/meta"
 	"github.com/crossplane/crossplane-runtime/pkg/reconciler/managed"
 	cpresource "github.com/crossplane/crossplane-runtime/pkg/resource"
 
@@ -14,20 +19,48 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 )
 
-// SetupResolverEndpoint adds a controller that reconciles ResolverEndpoints
+// SetupResolverRule adds a controller that reconciles ResolverRule
 func SetupResolverRule(mgr ctrl.Manager, l logging.Logger, rl workqueue.RateLimiter) error {
-	name := managed.ControllerName(svcapitypes.ResolverEndpointGroupKind)
-
+	name := managed.ControllerName(svcapitypes.ResolverRuleGroupKind)
+	opts := []option{
+		func(e *external) {
+			e.preObserve = preObserve
+			e.postCreate = postCreate
+			e.preDelete = preDelete
+			e.preUpdate = preUpdate
+		},
+	}
 	return ctrl.NewControllerManagedBy(mgr).
 		Named(name).
 		WithOptions(controller.Options{
 			RateLimiter: ratelimiter.NewDefaultManagedRateLimiter(rl),
 		}).
-		For(&svcapitypes.ResolverEndpoint{}).
+		For(&svcapitypes.ResolverRule{}).
 		Complete(managed.NewReconciler(mgr,
-			cpresource.ManagedKind(svcapitypes.ResolverEndpointGroupVersionKind),
-			managed.WithExternalConnecter(&connector{kube: mgr.GetClient()}),
+			cpresource.ManagedKind(svcapitypes.ResolverRuleGroupVersionKind),
+			managed.WithExternalConnecter(&connector{kube: mgr.GetClient(), opts: opts}),
 			managed.WithInitializers(managed.NewDefaultProviderConfig(mgr.GetClient())),
 			managed.WithLogger(l.WithValues("controller", name)),
 			managed.WithRecorder(event.NewAPIRecorder(mgr.GetEventRecorderFor(name)))))
+}
+
+func preObserve(_ context.Context, cr *svcapitypes.ResolverRule, obj *svcsdk.GetResolverRuleInput) error {
+	obj.ResolverRuleId = aws.String(meta.GetExternalName(cr))
+	return nil
+}
+
+func postCreate(_ context.Context, cr *svcapitypes.ResolverRule, obj *svcsdk.CreateResolverRuleOutput, cre managed.ExternalCreation, err error) (managed.ExternalCreation, error) {
+	meta.SetExternalName(cr, aws.StringValue(obj.ResolverRule.Id))
+	cre.ExternalNameAssigned = true
+	return cre, err
+}
+
+func preDelete(_ context.Context, cr *svcapitypes.ResolverRule, obj *svcsdk.DeleteResolverRuleInput) (bool, error) {
+	obj.ResolverRuleId = aws.String(meta.GetExternalName(cr))
+	return false, nil
+}
+
+func preUpdate(_ context.Context, cr *svcapitypes.ResolverRule, obj *svcsdk.UpdateResolverRuleInput) error {
+	obj.ResolverRuleId = aws.String(meta.GetExternalName(cr))
+	return nil
 }

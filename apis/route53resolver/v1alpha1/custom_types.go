@@ -24,6 +24,14 @@ type CustomResolverEndpointParameters struct {
 }
 
 type CustomResolverRuleParameters struct {
+	// ResolverEndpointIDRef is the reference to the ResolverEndpoint used
+	// to set the ResolverEndpointID
+	// +optional
+	ResolverEndpointIDRef *xpv1.Reference `json:"resolverEndpointIdRefs,omitempty"`
+	// ResolverEndpointIDSelector selects references to ResolverEndpoint used
+	// to set the ResolverEndpointID
+	// +optional
+	ResolverEndpointIDSelector *xpv1.Selector `json:"resolverEndpointIdSelector,omitempty"`
 }
 
 type CustomResolverQueryLogConfigParameters struct {

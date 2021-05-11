@@ -7,7 +7,7 @@ spec:
       region: us-east-1
       creatorRequestID: sample-resolver-123
       direction: OUTBOUND
-      name: amna-resolver
+      name: sample-resolver
       securityGroupIdRefs:
         - name: sample-cluster-sg
       ipAddresses:
@@ -17,4 +17,3 @@ spec:
             name: sample-subnet2
   providerConfigRef:
     name: sample
-  

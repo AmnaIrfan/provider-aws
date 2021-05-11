@@ -25,7 +25,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ResolveReferences of this VPCLink
+// ResolveReferences of this Route53ResolverEndpoint
 func (mg *ResolverEndpoint) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
 	// Resolve spec.forProvider.securityGroupIds
@@ -57,5 +57,26 @@ func (mg *ResolverEndpoint) ResolveReferences(ctx context.Context, c client.Read
 		mg.Spec.ForProvider.IPAddresses[i].SubnetID = reference.ToPtrValue(rsp.ResolvedValue)
 		mg.Spec.ForProvider.IPAddresses[i].SubnetIDRef = rsp.ResolvedReference
 	}
+	return nil
+}
+
+// ResolveReferences of this Route53ResolverRule
+func (mg *ResolverRule) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	//Resolve spec.forProvider.resolverEndpointId
+	rsp, err := r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ResolverEndpointID),
+		Reference:    mg.Spec.ForProvider.ResolverEndpointIDRef,
+		Selector:     mg.Spec.ForProvider.ResolverEndpointIDSelector,
+		To:           reference.To{Managed: &ResolverEndpoint{}, List: &ResolverEndpointList{}},
+		Extract:      reference.ExternalName(),
+	})
+	if err != nil {
+		return errors.Wrap(err, "spec.forProvider.resolverEndpointId")
+	}
+	mg.Spec.ForProvider.ResolverEndpointID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ResolverEndpointIDRef = rsp.ResolvedReference
+
 	return nil
 }

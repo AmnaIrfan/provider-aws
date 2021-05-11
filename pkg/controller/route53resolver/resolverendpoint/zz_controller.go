@@ -20,7 +20,6 @@ package resolverendpoint
 
 import (
 	"context"
-	"fmt"
 
 	svcapi "github.com/aws/aws-sdk-go/service/route53resolver"
 	svcsdk "github.com/aws/aws-sdk-go/service/route53resolver"

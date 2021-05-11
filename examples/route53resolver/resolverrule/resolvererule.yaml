@@ -1,0 +1,19 @@
+apiVersion: route53resolver.aws.crossplane.io/v1alpha1
+kind: ResolverRule
+metadata:
+  name: sample-resolver-rule
+spec:
+  forProvider:
+      region: us-east-1
+      creatorRequestID: sample-resolver-rule-123
+      name: sample-resolver-rule
+      domainName: www.example.com
+      ruleType: RECURSIVE
+      targetIPs:
+        - ip: 192.0.2.10
+          port: 53
+      resolverEndpointIdRefs:
+        name: sample-resolver
+  providerConfigRef:
+    name: sample
+  

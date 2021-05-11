@@ -19,17 +19,14 @@ spec:
   scope: Cluster
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .status.atProvider.status
-      name: STATUS
-      type: string
     - jsonPath: .status.conditions[?(@.type=='Ready')].status
       name: READY
       type: string
     - jsonPath: .status.conditions[?(@.type=='Synced')].status
       name: SYNCED
       type: string
-    - jsonPath: .status.atProvider.Id
-      name: ID
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
       type: string
     name: v1alpha1
     schema:

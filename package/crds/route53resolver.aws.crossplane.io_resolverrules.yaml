@@ -68,6 +68,27 @@ spec:
                   resolverEndpointID:
                     description: The ID of the outbound Resolver endpoint that you want to use to route DNS queries to the IP addresses that you specify in TargetIps.
                     type: string
+                  resolverEndpointIdRefs:
+                    description: ResolverEndpointIDRef is the reference to the ResolverEndpoint used to set the ResolverEndpointID
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                    required:
+                    - name
+                    type: object
+                  resolverEndpointIdSelector:
+                    description: ResolverEndpointIDSelector selects references to ResolverEndpoint used to set the ResolverEndpointID
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels is selected.
+                        type: object
+                    type: object
                   ruleType:
                     description: "When you want to forward DNS queries for specified domain name to resolvers on your network, specify FORWARD. \n When you have a forwarding rule to forward DNS queries for a domain to your network and you want Resolver to process queries for a subdomain of that domain, specify SYSTEM. \n For example, to forward DNS queries for example.com to resolvers on your network, you create a rule and specify FORWARD for RuleType. To then have Resolver process queries for apex.example.com, you create a rule and specify SYSTEM for RuleType. \n Currently, only Resolver can create rules that have a value of RECURSIVE for RuleType."
                     type: string
