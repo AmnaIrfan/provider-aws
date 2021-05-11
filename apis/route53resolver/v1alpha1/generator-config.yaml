@@ -1,6 +1,21 @@
 ignore:
+  resource_names:
+    - ResolverQueryLogConfig
   field_paths:
     - CreateResolverEndpointInput.SecurityGroupIds
     - CreateResolverEndpointInput.IpAddresses
   shape_names:
     - IpAddressRequest
+    - ResolverRuleAssociation
+    - ResolverRuleAssociationStatus
+resources:
+  ResolverEndpoint:
+    exceptions:
+      errors:
+        404:
+          code: ResourceNotFoundException
+  ResolverRule:
+    exceptions:
+      errors:
+          404:
+            code: ResourceNotFoundException
