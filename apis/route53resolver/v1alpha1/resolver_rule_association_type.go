@@ -5,10 +5,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-//GetResolverRuleAssociationWithContext(
-//DisassociateResolverRuleWithContext
-//AssociateResolverRuleWithContext
-
 // +kubebuilder:object:root=true
 
 // A ResolverRuleAssociation is a managed resource that represents the association between a Route53 Resolver Rule and VPC
@@ -35,8 +31,13 @@ type ResolverRuleAssociationSpec struct {
 
 //ResolverRuleAssociationParameters defines the desired state of a ResolverRuleAssociation
 type ResolverRuleAssociationParameters struct {
+
+	// Region is the region you'd like your VPC to be created in.
+	Region string `json:"region"`
+
 	// ID of resolver rule association
 	ID *string `json:"id"`
+
 	// A name for the association that you're creating between a Resolver rule and
 	// a VPC.
 	// +optional
@@ -81,22 +82,10 @@ type ResolverRuleAssociationStatus struct {
 type ResolverRuleAssociationObservation struct {
 	// The ID of the Resolver Rule Association
 	ID *string `json:"id,omitempty"`
-
-	// The ARN (Amazon Resource Name) for the Resolver Rule Association
-	ARN *string `json:"arn,omitempty"`
-
-	// The date and time that the Resolver Rule Association was created, in Unix time format and Coordinated Universal Time (UTC).
-	CreationTime *string `json:"creationTime,omitempty"`
-
 	// The ID of the VPC that the Resolver Rule is associated to
-	VPCID *string `json:"VPCID,omitempty"`
-
-	ModificationTime *string `json:"modificationTime,omitempty"`
-
+	VPCID  *string `json:"VPCID,omitempty"`
 	RuleID *string `json:"RuleID,omitempty"`
-
 	Status *string `json:"status,omitempty"`
-
 	// A detailed description of the status of the Resolver endpoint.
 	StatusMessage *string `json:"statusMessage,omitempty"`
 }

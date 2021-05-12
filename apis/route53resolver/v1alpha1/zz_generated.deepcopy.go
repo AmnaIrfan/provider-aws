@@ -723,23 +723,8 @@ func (in *ResolverRuleAssociationObservation) DeepCopyInto(out *ResolverRuleAsso
 		*out = new(string)
 		**out = **in
 	}
-	if in.ARN != nil {
-		in, out := &in.ARN, &out.ARN
-		*out = new(string)
-		**out = **in
-	}
-	if in.CreationTime != nil {
-		in, out := &in.CreationTime, &out.CreationTime
-		*out = new(string)
-		**out = **in
-	}
 	if in.VPCID != nil {
 		in, out := &in.VPCID, &out.VPCID
-		*out = new(string)
-		**out = **in
-	}
-	if in.ModificationTime != nil {
-		in, out := &in.ModificationTime, &out.ModificationTime
 		*out = new(string)
 		**out = **in
 	}
