@@ -3,13 +3,13 @@ package route53resolver
 import (
 	"github.com/aws/aws-sdk-go-v2/aws/awserr"
 	"github.com/aws/aws-sdk-go-v2/service/route53resolver"
-	"github.com/aws/aws-sdk-go/aws"
 	"github.com/crossplane/provider-aws/apis/route53resolver/v1alpha1"
+	aws "github.com/crossplane/provider-aws/pkg/clients"
 )
 
 const (
 	// ResolverRuleAssociation not found
-	ResolverRuleAssociationNotFound = "NoResourceFoundException"
+	ResolverRuleAssociationNotFound = "ResourceNotFoundException"
 )
 
 // ResolverRuleAssociationClient is the external client used for ResolverRuleAssociation Custom Resource
@@ -33,20 +33,11 @@ func IsResolverRuleAssociationNotFoundErr(err error) bool {
 func GenerateRoute53ResolverObservation(resolverruleassociation route53resolver.ResolverRuleAssociation) v1alpha1.ResolverRuleAssociationObservation {
 	o := v1alpha1.ResolverRuleAssociationObservation{
 		ID:            resolverruleassociation.Id,
-		RuleID:        resolverruleassociation.ResolverRuleId,
-		VPCID:         resolverruleassociation.VPCId,
-		StatusMessage: resolverruleassociation.StatusMessage,
-		Status:        aws.String(string(resolverruleassociation.Status)),
+		RuleID:        aws.StringValue(resolverruleassociation.ResolverRuleId),
+		VPCID:         aws.StringValue(resolverruleassociation.VPCId),
+		StatusMessage: aws.StringValue(resolverruleassociation.StatusMessage),
+		Status:        string(resolverruleassociation.Status),
 	}
 
 	return o
-}
-
-// LateInitializeResolverRuleAssociation fills the empty fields in *vv1alpha1.ResolverRuleAssociationParameters with
-// the values seen in route53resolver.ResolverRuleAssociation
-func LateInitializeResolverRuleAssociation(in *v1alpha1.ResolverRuleAssociationParameters, a *route53resolver.ResolverRuleAssociation) { // nolint:gocyclo
-	if a == nil {
-		return
-	}
-	in.Name = a.Name
 }

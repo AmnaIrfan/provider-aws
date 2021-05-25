@@ -61,6 +61,7 @@ spec:
                     type: string
                   ipAddresses:
                     items:
+                      description: IPAddressRequest is used by ResolverEndpoint
                       properties:
                         ip:
                           type: string

@@ -65,9 +65,9 @@ func SetupResolverRuleAssociation(mgr ctrl.Manager, l logging.Logger, rl workque
 		WithOptions(controller.Options{
 			RateLimiter: ratelimiter.NewDefaultManagedRateLimiter(rl),
 		}).
-		For(&v1alpha1.ResolverRule{}).
+		For(&v1alpha1.ResolverRuleAssociation{}).
 		Complete(managed.NewReconciler(mgr,
-			resource.ManagedKind(v1alpha1.ResolverRuleGroupVersionKind),
+			resource.ManagedKind(v1alpha1.ResolverRuleAssociationGroupVersionKind),
 			managed.WithExternalConnecter(&connector{kube: mgr.GetClient()}),
 			managed.WithReferenceResolver(managed.NewAPISimpleReferenceResolver(mgr.GetClient())),
 			managed.WithConnectionPublishers(),
@@ -123,7 +123,7 @@ func (e *external) Observe(ctx context.Context, mgd resource.Managed) (managed.E
 	current := cr.Spec.ForProvider.DeepCopy()
 	//update crossplane resource based on the resourcce in aws
 	//nothing to update
-	r53r.LateInitializeResolverRuleAssociation(&cr.Spec.ForProvider, observed)
+	//r53r.LateInitializeResolverRuleAssociation(&cr.Spec.ForProvider, observed)
 
 	cr.SetConditions(xpv1.Available())
 

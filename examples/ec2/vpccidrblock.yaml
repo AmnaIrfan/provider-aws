@@ -9,4 +9,4 @@ spec:
     vpcIdRef: 
       name:  sample-vpc
   providerConfigRef:
-    name: example
+    name: ea-aws-amna

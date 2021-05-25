@@ -25,11 +25,17 @@ spec:
     - jsonPath: .status.conditions[?(@.type=='Synced')].status
       name: SYNCED
       type: string
+    - jsonPath: .status.atProvider.status
+      name: STATUS
+      type: string
     - jsonPath: .metadata.annotations.crossplane\.io/external-name
       name: ID
       type: string
     - jsonPath: .spec.forProvider.vpcId
       name: VPC
+      type: string
+    - jsonPath: .spec.forProvider.resolverRuleId
+      name: Resolver Rule ID
       type: string
     - jsonPath: .metadata.creationTimestamp
       name: AGE
@@ -117,7 +123,6 @@ spec:
                         type: object
                     type: object
                 required:
-                - id
                 - region
                 type: object
               providerConfigRef:

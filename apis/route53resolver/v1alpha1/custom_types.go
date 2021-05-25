@@ -2,6 +2,7 @@ package v1alpha1
 
 import xpv1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 
+// CustomResolverEndpointParameters are custom parameters for ResolverEndpoint
 type CustomResolverEndpointParameters struct {
 	// The ID of one or more security groups that you want to use to control access
 	// to this VPC. The security group that you specify must include one or more
@@ -23,6 +24,7 @@ type CustomResolverEndpointParameters struct {
 	IPAddresses []*IPAddressRequest `json:"ipAddresses"`
 }
 
+// CustomResolverRuleParameters are custom parameters for CustomResolverRule
 type CustomResolverRuleParameters struct {
 	// ResolverEndpointIDRef is the reference to the ResolverEndpoint used
 	// to set the ResolverEndpointID
@@ -34,9 +36,11 @@ type CustomResolverRuleParameters struct {
 	ResolverEndpointIDSelector *xpv1.Selector `json:"resolverEndpointIdSelector,omitempty"`
 }
 
+// CustomResolverQueryLogConfigParameters are custom parameters for CustomResolverQueryLogConfig
 type CustomResolverQueryLogConfigParameters struct {
 }
 
+// IPAddressRequest is used by ResolverEndpoint
 type IPAddressRequest struct {
 	IP *string `json:"ip,omitempty"`
 
