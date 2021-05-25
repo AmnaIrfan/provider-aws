@@ -16,69 +16,103 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import (
-	"context"
+// import (
+// 	"context"
 
-	"github.com/crossplane/crossplane-runtime/pkg/reference"
+// 	"github.com/crossplane/crossplane-runtime/pkg/reference"
 
-	"github.com/pkg/errors"
-	"sigs.k8s.io/controller-runtime/pkg/client"
+// 	"github.com/pkg/errors"
+// 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	ec2 "github.com/crossplane/provider-aws/apis/ec2/v1beta1"
-)
+// 	ec2 "github.com/crossplane/provider-aws/apis/ec2/v1beta1"
+// )
 
-// ResolveReferences of this Route53ResolverEndpoint
-func (mg *ResolverEndpoint) ResolveReferences(ctx context.Context, c client.Reader) error {
-	r := reference.NewAPIResolver(c, mg)
-	// Resolve spec.forProvider.securityGroupIds
-	mrsp, err := r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
-		CurrentValues: mg.Spec.ForProvider.SecurityGroupIDs,
-		References:    mg.Spec.ForProvider.SecurityGroupIDRefs,
-		Selector:      mg.Spec.ForProvider.SecurityGroupIDSelector,
-		To:            reference.To{Managed: &ec2.SecurityGroup{}, List: &ec2.SecurityGroupList{}},
-		Extract:       reference.ExternalName(),
-	})
-	if err != nil {
-		return errors.Wrap(err, "spec.forProvider.securityGroupIds")
-	}
-	mg.Spec.ForProvider.SecurityGroupIDs = mrsp.ResolvedValues
-	mg.Spec.ForProvider.SecurityGroupIDRefs = mrsp.ResolvedReferences
+// // ResolveReferences of this Route53ResolverEndpoint
+// func (mg *ResolverEndpoint) ResolveReferences(ctx context.Context, c client.Reader) error {
+// 	r := reference.NewAPIResolver(c, mg)
+// 	// Resolve spec.forProvider.securityGroupIds
+// 	mrsp, err := r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+// 		CurrentValues: mg.Spec.ForProvider.SecurityGroupIDs,
+// 		References:    mg.Spec.ForProvider.SecurityGroupIDRefs,
+// 		Selector:      mg.Spec.ForProvider.SecurityGroupIDSelector,
+// 		To:            reference.To{Managed: &ec2.SecurityGroup{}, List: &ec2.SecurityGroupList{}},
+// 		Extract:       reference.ExternalName(),
+// 	})
+// 	if err != nil {
+// 		return errors.Wrap(err, "spec.forProvider.securityGroupIds")
+// 	}
+// 	mg.Spec.ForProvider.SecurityGroupIDs = mrsp.ResolvedValues
+// 	mg.Spec.ForProvider.SecurityGroupIDRefs = mrsp.ResolvedReferences
 
-	// Resolve spec.forProvider.ipAddresses[].subNetIds
-	for i := range mg.Spec.ForProvider.IPAddresses {
-		rsp, err := r.Resolve(ctx, reference.ResolutionRequest{
-			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.IPAddresses[i].SubnetID),
-			Reference:    mg.Spec.ForProvider.IPAddresses[i].SubnetIDRef,
-			Selector:     mg.Spec.ForProvider.IPAddresses[i].SubnetIDSelector,
-			To:           reference.To{Managed: &ec2.Subnet{}, List: &ec2.SubnetList{}},
-			Extract:      reference.ExternalName(),
-		})
-		if err != nil {
-			return errors.Wrap(err, "spec.forProvider.ipAddresses[].subNetIds")
-		}
-		mg.Spec.ForProvider.IPAddresses[i].SubnetID = reference.ToPtrValue(rsp.ResolvedValue)
-		mg.Spec.ForProvider.IPAddresses[i].SubnetIDRef = rsp.ResolvedReference
-	}
-	return nil
-}
+// 	// Resolve spec.forProvider.ipAddresses[].subNetIds
+// 	for i := range mg.Spec.ForProvider.IPAddresses {
+// 		rsp, err := r.Resolve(ctx, reference.ResolutionRequest{
+// 			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.IPAddresses[i].SubnetID),
+// 			Reference:    mg.Spec.ForProvider.IPAddresses[i].SubnetIDRef,
+// 			Selector:     mg.Spec.ForProvider.IPAddresses[i].SubnetIDSelector,
+// 			To:           reference.To{Managed: &ec2.Subnet{}, List: &ec2.SubnetList{}},
+// 			Extract:      reference.ExternalName(),
+// 		})
+// 		if err != nil {
+// 			return errors.Wrap(err, "spec.forProvider.ipAddresses[].subNetIds")
+// 		}
+// 		mg.Spec.ForProvider.IPAddresses[i].SubnetID = reference.ToPtrValue(rsp.ResolvedValue)
+// 		mg.Spec.ForProvider.IPAddresses[i].SubnetIDRef = rsp.ResolvedReference
+// 	}
+// 	return nil
+// }
 
-// ResolveReferences of this Route53ResolverRule
-func (mg *ResolverRule) ResolveReferences(ctx context.Context, c client.Reader) error {
-	r := reference.NewAPIResolver(c, mg)
+// // ResolveReferences of this Route53ResolverRule
+// func (mg *ResolverRule) ResolveReferences(ctx context.Context, c client.Reader) error {
+// 	r := reference.NewAPIResolver(c, mg)
 
-	// Resolve spec.forProvider.resolverEndpointId
-	rsp, err := r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ResolverEndpointID),
-		Reference:    mg.Spec.ForProvider.ResolverEndpointIDRef,
-		Selector:     mg.Spec.ForProvider.ResolverEndpointIDSelector,
-		To:           reference.To{Managed: &ResolverEndpoint{}, List: &ResolverEndpointList{}},
-		Extract:      reference.ExternalName(),
-	})
-	if err != nil {
-		return errors.Wrap(err, "spec.forProvider.resolverEndpointId")
-	}
-	mg.Spec.ForProvider.ResolverEndpointID = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.ForProvider.ResolverEndpointIDRef = rsp.ResolvedReference
+// 	// Resolve spec.forProvider.resolverEndpointId
+// 	rsp, err := r.Resolve(ctx, reference.ResolutionRequest{
+// 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ResolverEndpointID),
+// 		Reference:    mg.Spec.ForProvider.ResolverEndpointIDRef,
+// 		Selector:     mg.Spec.ForProvider.ResolverEndpointIDSelector,
+// 		To:           reference.To{Managed: &ResolverEndpoint{}, List: &ResolverEndpointList{}},
+// 		Extract:      reference.ExternalName(),
+// 	})
+// 	if err != nil {
+// 		return errors.Wrap(err, "spec.forProvider.resolverEndpointId")
+// 	}
+// 	mg.Spec.ForProvider.ResolverEndpointID = reference.ToPtrValue(rsp.ResolvedValue)
+// 	mg.Spec.ForProvider.ResolverEndpointIDRef = rsp.ResolvedReference
 
-	return nil
-}
+// 	return nil
+// }
+
+// //ResolveReferences of this Route53ResolverRule
+// func (mg *ResolverRuleAssociation) ResolveReferences(ctx context.Context, c client.Reader) error {
+// 	r := reference.NewAPIResolver(c, mg)
+
+// 	//Resolve spec.forProvider.vpcId
+// 	rsp, err := r.Resolve(ctx, reference.ResolutionRequest{
+// 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.VPCID),
+// 		Reference:    mg.Spec.ForProvider.VPCIDRef,
+// 		Selector:     mg.Spec.ForProvider.VPCIDSelector,
+// 		To:           reference.To{Managed: &ec2.VPC{}, List: &ec2.VPCList{}},
+// 		Extract:      reference.ExternalName(),
+// 	})
+// 	if err != nil {
+// 		return errors.Wrap(err, "spec.forProvider.VpcId")
+// 	}
+// 	mg.Spec.ForProvider.VPCID = reference.ToPtrValue(rsp.ResolvedValue)
+// 	mg.Spec.ForProvider.VPCIDRef = rsp.ResolvedReference
+
+// 	//Resolve spec.forProvider.resolverRuleId
+// 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+// 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ResolverRuleID),
+// 		Reference:    mg.Spec.ForProvider.ResolverRuleIDRef,
+// 		Selector:     mg.Spec.ForProvider.ResolverRuleIDSelector,
+// 		To:           reference.To{Managed: &ResolverRule{}, List: &ResolverRuleList{}},
+// 		Extract:      reference.ExternalName(),
+// 	})
+// 	if err != nil {
+// 		return errors.Wrap(err, "spec.forProvider.resolverRuleId")
+// 	}
+// 	mg.Spec.ForProvider.ResolverRuleID = reference.ToPtrValue(rsp.ResolvedValue)
+// 	mg.Spec.ForProvider.ResolverRuleIDRef = rsp.ResolvedReference
+// 	return nil
+// }

@@ -81,6 +81,7 @@ import (
 	"github.com/crossplane/provider-aws/pkg/controller/route53/resourcerecordset"
 	"github.com/crossplane/provider-aws/pkg/controller/route53resolver/resolverendpoint"
 	"github.com/crossplane/provider-aws/pkg/controller/route53resolver/resolverrule"
+	"github.com/crossplane/provider-aws/pkg/controller/route53resolver/resolverruleassociation"
 	"github.com/crossplane/provider-aws/pkg/controller/s3"
 	"github.com/crossplane/provider-aws/pkg/controller/s3/bucketpolicy"
 	"github.com/crossplane/provider-aws/pkg/controller/secretsmanager/secret"
@@ -158,6 +159,7 @@ func Setup(mgr ctrl.Manager, l logging.Logger, rl workqueue.RateLimiter) error {
 		vpccidrblock.SetupVPCCIDRBlock,
 		resolverendpoint.SetupResolverEndpoint,
 		resolverrule.SetupResolverRule,
+		resolverruleassociation.SetupResolverRuleAssociation,
 	} {
 		if err := setup(mgr, l, rl); err != nil {
 			return err
